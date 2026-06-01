@@ -1,0 +1,43 @@
+@reference "../../app/globals.css";
+
+@keyframes shimmer {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.card {
+  @apply rounded-xl p-6;
+  background-color: var(--color-light);
+  border: 1px solid var(--color-lighter);
+}
+
+.header {
+  @apply flex gap-4 items-center mb-6;
+}
+
+.avatar {
+  @apply rounded-full shrink-0;
+  width: 72px;
+  height: 72px;
+  background-color: var(--color-lighter);
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.headerLines {
+  @apply flex flex-col gap-3 flex-1;
+}
+
+.body {
+  @apply flex flex-col gap-4;
+}
+
+.line,
+.lineShort,
+.lineMed {
+  @apply h-3 rounded-full;
+  background-color: var(--color-lighter);
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.lineShort { width: 55%; }
+.lineMed   { width: 75%; }
