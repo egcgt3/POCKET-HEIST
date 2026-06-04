@@ -1,0 +1,81 @@
+@reference "../../app/globals.css";
+
+.form {
+  @apply flex flex-col gap-5 mx-auto p-8 rounded-xl;
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--color-light);
+  border: 1px solid var(--color-lighter);
+}
+
+.fieldGroup {
+  @apply flex flex-col gap-2;
+}
+
+.label {
+  @apply text-sm font-medium;
+  color: var(--color-body);
+}
+
+.input {
+  @apply w-full px-3 py-2 rounded-md text-sm transition-colors;
+  background-color: var(--color-lighter);
+  color: var(--color-heading);
+  border: 1px solid var(--color-lighter);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.passwordWrapper {
+  @apply relative;
+}
+
+.passwordWrapper .input {
+  padding-right: 2.5rem;
+}
+
+.toggleBtn {
+  @apply absolute flex items-center justify-center;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-body);
+}
+
+.toggleBtn:hover {
+  color: var(--color-heading);
+}
+
+.errorMsg {
+  @apply block text-sm;
+  color: var(--color-error);
+}
+
+.submitBtn {
+  @apply w-full px-4 py-2 rounded-md font-semibold text-sm transition-colors;
+  background-color: var(--color-primary);
+  color: var(--color-dark);
+}
+
+.submitBtn:hover {
+  background-color: var(--color-secondary);
+}
+
+.altLink {
+  @apply text-center text-sm;
+  color: var(--color-body);
+}
+
+.altLink a {
+  color: var(--color-primary);
+}
+
+.altLink a:hover {
+  color: var(--color-secondary);
+}
