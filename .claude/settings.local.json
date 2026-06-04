@@ -7,5 +7,22 @@
       "Bash(git commit *)",
       "Bash(git switch:*)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"systemMessage\": \"File saved/edit!\"}'"
+          },
+          {
+            "type": "command",
+            "command": "fp=$(jq -r '.tool_input.file_path'); [[ \"$fp\" =~ \\.tsx?$ ]] && npx prettier --write \"$fp\""
+          }
+        ]
+      }
+    ]
   }
 }

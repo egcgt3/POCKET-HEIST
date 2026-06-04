@@ -13,8 +13,10 @@ npm run test     # Run all tests with Vitest (watch mode)
 
 Run a single test file:
 ```bash
-npx vitest run tests/components/Navbar.test.tsx
+npm test -- tests/components/Navbar.test.tsx --run
 ```
+
+> **Note:** Tests require Node ≥ 20. If `npm test` fails with a `node:fs/promises` error, run `nvm use 20.9.0` first.
 
 ## Architecture
 
@@ -36,7 +38,7 @@ Two complementary approaches are used together:
 
 ## Testing
 
-Vitest with `jsdom` environment and React Testing Library. The `vitest/globals` types are injected via `tsconfig.json`, so `describe`/`it`/`expect` are available without explicit imports. Tests live in `tests/` mirroring the source structure (e.g. `tests/components/`).
+Vitest with `happy-dom` environment and React Testing Library. The `vitest/globals` types are injected via `tsconfig.json`, so `describe`/`it`/`expect` are available without explicit imports. Tests live in `tests/` mirroring the source structure (e.g. `tests/components/`).
 
 ## Additional Coding Preferences
 
