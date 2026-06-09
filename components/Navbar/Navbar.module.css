@@ -15,3 +15,12 @@
 svg.logo {
   display: inline-block;
 }
+
+.createBtn {
+  @apply px-4 py-2 rounded-full font-semibold text-sm transition-opacity inline-flex items-center gap-1.5;
+  background: linear-gradient(to right, var(--color-secondary), var(--color-primary));
+  color: white;
+}
+.createBtn:hover {
+  @apply opacity-90;
+}
