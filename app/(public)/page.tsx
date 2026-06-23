@@ -1,10 +1,14 @@
+"use client";
+
 // this page should be used only as a splash page to decide where a user should be navigated to
 // when logged in --> to /heists
 // when not logged in --> to /login
 
 import { Clock8 } from "lucide-react";
+import { useUser } from "@/lib/AuthContext";
 
 export default function Home() {
+  useUser(); // TODO: redirect to /heists (user) or /login (no user) once navigation is implemented
   return (
     <div className="center-content">
       <div className="page-content">
