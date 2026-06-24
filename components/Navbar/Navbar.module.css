@@ -8,6 +8,10 @@
   @apply mx-auto max-w-6xl flex justify-between items-center;
 }
 
+.siteNav ul {
+  @apply flex items-center gap-3 list-none;
+}
+
 .siteNav h1 {
   @apply font-bold text-xl;
 }
@@ -23,4 +27,14 @@ svg.logo {
 }
 .createBtn:hover {
   @apply opacity-90;
+}
+
+.logoutBtn {
+  @apply px-4 py-2 rounded-full font-semibold text-sm transition-opacity cursor-pointer;
+  background: transparent;
+  color: var(--color-error);
+  border: 1.5px solid var(--color-error);
+}
+.logoutBtn:hover {
+  @apply opacity-75;
 }
