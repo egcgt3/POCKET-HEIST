@@ -1,7 +1,11 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { setDoc } from "firebase/firestore";
 
 // component imports
@@ -9,6 +13,7 @@ import AuthForm from "@/components/AuthForm";
 
 vi.mock("firebase/auth", () => ({
   createUserWithEmailAndPassword: vi.fn(),
+  signInWithEmailAndPassword: vi.fn(),
   updateProfile: vi.fn(),
 }));
 vi.mock("firebase/firestore", () => ({
@@ -88,21 +93,19 @@ describe("AuthForm", () => {
   });
 
   describe("validation", () => {
-    it("shows errors and does not log when both fields are empty", async () => {
+    it("shows errors and does not call Firebase when both fields are empty", async () => {
       const user = userEvent.setup();
-      const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
       render(<AuthForm mode="login" />);
 
       await user.click(screen.getByRole("button", { name: "Log In" }));
 
       expect(screen.getByText("Email is required")).toBeInTheDocument();
       expect(screen.getByText("Password is required")).toBeInTheDocument();
-      expect(logSpy).not.toHaveBeenCalled();
+      expect(signInWithEmailAndPassword).not.toHaveBeenCalled();
     });
 
     it("shows only a password error when email is filled", async () => {
       const user = userEvent.setup();
-      const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
       render(<AuthForm mode="login" />);
 
       await user.type(screen.getByLabelText("Email"), "thief@heist.io");
@@ -110,24 +113,112 @@ describe("AuthForm", () => {
 
       expect(screen.queryByText("Email is required")).not.toBeInTheDocument();
       expect(screen.getByText("Password is required")).toBeInTheDocument();
-      expect(logSpy).not.toHaveBeenCalled();
+      expect(signInWithEmailAndPassword).not.toHaveBeenCalled();
     });
   });
 
-  describe("successful submission", () => {
-    it("logs the email and password when both fields are filled", async () => {
-      const user = userEvent.setup();
-      const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-      render(<AuthForm mode="login" />);
+  describe("login mode — Firebase", () => {
+    beforeEach(() => {
+      vi.mocked(signInWithEmailAndPassword).mockResolvedValue({} as never);
+    });
 
+    async function submitLogin(email = "thief@heist.io", password = "s3cr3t") {
+      const user = userEvent.setup();
+      render(<AuthForm mode="login" />);
+      await user.type(screen.getByLabelText("Email"), email);
+      await user.type(screen.getByLabelText("Password"), password);
+      await user.click(screen.getByRole("button", { name: "Log In" }));
+    }
+
+    it("calls signInWithEmailAndPassword with the submitted credentials", async () => {
+      await submitLogin();
+      await waitFor(() =>
+        expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+          {},
+          "thief@heist.io",
+          "s3cr3t",
+        ),
+      );
+    });
+
+    it("shows 'You're logged in!' after successful sign-in", async () => {
+      await submitLogin();
+      await waitFor(() =>
+        expect(screen.getByText("You're logged in!")).toBeInTheDocument(),
+      );
+    });
+
+    it("clears the email and password fields after success", async () => {
+      await submitLogin();
+      await waitFor(() => {
+        expect(screen.getByLabelText("Email")).toHaveValue("");
+        expect(screen.getByLabelText("Password")).toHaveValue("");
+      });
+    });
+
+    it("disables the submit button while the request is pending", async () => {
+      let resolve!: () => void;
+      vi.mocked(signInWithEmailAndPassword).mockReturnValueOnce(
+        new Promise((res) => {
+          resolve = () => res({} as never);
+        }),
+      );
+
+      const user = userEvent.setup();
+      render(<AuthForm mode="login" />);
       await user.type(screen.getByLabelText("Email"), "thief@heist.io");
       await user.type(screen.getByLabelText("Password"), "s3cr3t");
-      await user.click(screen.getByRole("button", { name: "Log In" }));
 
-      expect(logSpy).toHaveBeenCalledWith({
-        email: "thief@heist.io",
-        password: "s3cr3t",
+      const btn = screen.getByRole("button", { name: "Log In" });
+      await user.click(btn);
+
+      expect(btn).toBeDisabled();
+
+      resolve();
+      await waitFor(() => expect(btn).not.toBeDisabled());
+    });
+
+    it("shows a friendly error for auth/invalid-credential", async () => {
+      vi.mocked(signInWithEmailAndPassword).mockRejectedValueOnce({
+        code: "auth/invalid-credential",
       });
+      await submitLogin();
+      await waitFor(() =>
+        expect(
+          screen.getByText("Incorrect email or password."),
+        ).toBeInTheDocument(),
+      );
+    });
+
+    it("shows a rate-limit error for auth/too-many-requests", async () => {
+      vi.mocked(signInWithEmailAndPassword).mockRejectedValueOnce({
+        code: "auth/too-many-requests",
+      });
+      await submitLogin();
+      await waitFor(() =>
+        expect(
+          screen.getByText("Too many attempts. Please try again later."),
+        ).toBeInTheDocument(),
+      );
+    });
+
+    it("shows a generic error for an unmapped error code", async () => {
+      vi.mocked(signInWithEmailAndPassword).mockRejectedValueOnce({
+        code: "auth/network-request-failed",
+      });
+      await submitLogin();
+      await waitFor(() =>
+        expect(
+          screen.getByText("Something went wrong. Please try again."),
+        ).toBeInTheDocument(),
+      );
+    });
+
+    it("does not throw when signInWithEmailAndPassword rejects unexpectedly", async () => {
+      vi.mocked(signInWithEmailAndPassword).mockRejectedValueOnce(
+        new Error("unexpected"),
+      );
+      await expect(submitLogin()).resolves.not.toThrow();
     });
   });
 

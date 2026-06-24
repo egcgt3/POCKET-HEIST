@@ -4,7 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { generateCodename } from "@/lib/generateCodename";
@@ -16,6 +20,10 @@ const FIREBASE_ERRORS: Record<string, string> = {
   "auth/email-already-in-use": "An account with this email already exists.",
   "auth/weak-password": "Password must be at least 6 characters.",
   "auth/invalid-email": "Please enter a valid email address.",
+  "auth/invalid-credential": "Incorrect email or password.",
+  "auth/user-not-found": "Incorrect email or password.",
+  "auth/wrong-password": "Incorrect email or password.",
+  "auth/too-many-requests": "Too many attempts. Please try again later.",
 };
 
 export default function AuthForm({ mode }: AuthFormProps) {
@@ -27,6 +35,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [passwordError, setPasswordError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [firebaseError, setFirebaseError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const isLogin = mode === "login";
   const title = isLogin ? "Log in to Your Account" : "Sign up for an Account";
@@ -43,9 +52,11 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
     if (nextEmailError || nextPasswordError) return;
 
+    setSubmitting(true);
+    setFirebaseError("");
+    setSuccess(false);
+
     if (!isLogin) {
-      setSubmitting(true);
-      setFirebaseError("");
       try {
         const cred = await createUserWithEmailAndPassword(
           auth,
@@ -70,7 +81,19 @@ export default function AuthForm({ mode }: AuthFormProps) {
       return;
     }
 
-    console.log({ email, password });
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      setSuccess(true);
+      setEmail("");
+      setPassword("");
+    } catch (err) {
+      const code = (err as { code?: string }).code ?? "";
+      setFirebaseError(
+        FIREBASE_ERRORS[code] ?? "Something went wrong. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -132,6 +155,12 @@ export default function AuthForm({ mode }: AuthFormProps) {
       {firebaseError && (
         <span className={styles.errorMsg} role="alert">
           {firebaseError}
+        </span>
+      )}
+
+      {success && (
+        <span className={styles.successMsg} role="status">
+          You&apos;re logged in!
         </span>
       )}
 

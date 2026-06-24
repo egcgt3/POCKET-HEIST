@@ -57,6 +57,11 @@
   color: var(--color-error);
 }
 
+.successMsg {
+  @apply block text-sm;
+  color: var(--color-success);
+}
+
 .submitBtn {
   @apply w-full px-4 py-2 rounded-md font-semibold text-sm transition-colors;
   background-color: var(--color-primary);
