@@ -45,6 +45,18 @@ svg.logo {
 }
 
 /* button */
+/* auth loader */
+.auth-loader {
+  @apply flex items-center justify-center min-h-svh;
+}
+.auth-loader-icon {
+  @apply animate-spin;
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-primary);
+}
+
+/* button */
 .btn {
   @apply px-4 py-2 rounded-md font-semibold text-sm transition-colors;
   background-color: var(--color-primary);
