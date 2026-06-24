@@ -1,9 +1,25 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, afterEach } from "vitest";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { setDoc } from "firebase/firestore";
 
 // component imports
 import AuthForm from "@/components/AuthForm";
+
+vi.mock("firebase/auth", () => ({
+  createUserWithEmailAndPassword: vi.fn(),
+  updateProfile: vi.fn(),
+}));
+vi.mock("firebase/firestore", () => ({
+  setDoc: vi.fn(),
+  doc: vi.fn(() => ({})),
+}));
+vi.mock("@/lib/firebase", () => ({ auth: {}, db: {} }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+vi.mock("@/lib/generateCodename", () => ({
+  generateCodename: () => "SilentOnyxRaven",
+}));
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -112,6 +128,102 @@ describe("AuthForm", () => {
         email: "thief@heist.io",
         password: "s3cr3t",
       });
+    });
+  });
+
+  describe("signup mode — Firebase", () => {
+    const fakeUser = { uid: "uid123" };
+    const fakeCred = { user: fakeUser };
+
+    beforeEach(() => {
+      vi.mocked(createUserWithEmailAndPassword).mockResolvedValue(
+        fakeCred as never,
+      );
+      vi.mocked(updateProfile).mockResolvedValue();
+      vi.mocked(setDoc).mockResolvedValue();
+    });
+
+    async function submitSignup(
+      email = "agent@heist.io",
+      password = "s3cr3t!",
+    ) {
+      const user = userEvent.setup();
+      render(<AuthForm mode="signup" />);
+      await user.type(screen.getByLabelText("Email"), email);
+      await user.type(screen.getByLabelText("Password"), password);
+      await user.click(screen.getByRole("button", { name: "Sign Up" }));
+    }
+
+    it("calls createUserWithEmailAndPassword with the submitted credentials", async () => {
+      await submitSignup();
+      await waitFor(() =>
+        expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
+          {},
+          "agent@heist.io",
+          "s3cr3t!",
+        ),
+      );
+    });
+
+    it("calls updateProfile with the generated codename as displayName", async () => {
+      await submitSignup();
+      await waitFor(() =>
+        expect(updateProfile).toHaveBeenCalledWith(fakeUser, {
+          displayName: "SilentOnyxRaven",
+        }),
+      );
+    });
+
+    it("calls setDoc with id and codename but no email field", async () => {
+      await submitSignup();
+      await waitFor(() => {
+        expect(setDoc).toHaveBeenCalledWith(
+          expect.anything(),
+          expect.objectContaining({
+            id: "uid123",
+            codename: "SilentOnyxRaven",
+          }),
+        );
+        const docData = vi.mocked(setDoc).mock.calls[0][1] as Record<
+          string,
+          unknown
+        >;
+        expect(docData).not.toHaveProperty("email");
+      });
+    });
+
+    it("shows a friendly error when the email is already in use", async () => {
+      vi.mocked(createUserWithEmailAndPassword).mockRejectedValueOnce({
+        code: "auth/email-already-in-use",
+      });
+      await submitSignup();
+      await waitFor(() =>
+        expect(
+          screen.getByText("An account with this email already exists."),
+        ).toBeInTheDocument(),
+      );
+    });
+
+    it("disables the submit button while the request is pending and re-enables after", async () => {
+      let resolve!: () => void;
+      vi.mocked(createUserWithEmailAndPassword).mockReturnValueOnce(
+        new Promise((res) => {
+          resolve = () => res(fakeCred as never);
+        }),
+      );
+
+      const user = userEvent.setup();
+      render(<AuthForm mode="signup" />);
+      await user.type(screen.getByLabelText("Email"), "agent@heist.io");
+      await user.type(screen.getByLabelText("Password"), "s3cr3t!");
+
+      const btn = screen.getByRole("button", { name: "Sign Up" });
+      await user.click(btn);
+
+      expect(btn).toBeDisabled();
+
+      resolve();
+      await waitFor(() => expect(btn).not.toBeDisabled());
     });
   });
 });
