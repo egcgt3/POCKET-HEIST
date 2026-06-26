@@ -24,7 +24,7 @@ export interface CreateHeistInput {
   createdByCodename: string;
   assignedTo: string;
   assignedToCodename: string;
-  deadline: Date;
+  deadline: Date; // automatically 48 hours after creation
   finalStatus: null;
   createdAt: FieldValue;
 }
