@@ -1,0 +1,1 @@
+- [Recurring a11y patterns & antipatterns](project_a11y_patterns.md) — Skeleton ARIA gaps, missing focus-visible globals, article labeling, opacity-induced contrast failures, reduced-motion gaps

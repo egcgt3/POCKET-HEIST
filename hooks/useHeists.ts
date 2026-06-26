@@ -51,7 +51,10 @@ export function useHeists(mode: HeistMode): {
       (snapshot) => {
         let docs = snapshot.docs.map((doc) => doc.data() as Heist);
         if (mode === "expired") {
-          docs = docs.filter((h) => h.finalStatus !== null);
+          docs = docs.filter(
+            (h): h is Heist & { finalStatus: "success" | "failure" } =>
+              h.finalStatus !== null,
+          ) as Heist[];
         }
         setHeists(docs);
         setLoading(false);

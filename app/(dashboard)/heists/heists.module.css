@@ -5,3 +5,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
+
+.pastSection {
+  @apply mt-10 flex flex-col gap-4;
+}
