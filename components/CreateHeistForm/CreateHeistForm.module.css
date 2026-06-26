@@ -1,0 +1,79 @@
+@reference "../../app/globals.css";
+
+.form {
+  @apply flex flex-col gap-5 mx-auto p-8 rounded-xl;
+  width: 100%;
+  max-width: 480px;
+  background-color: var(--color-light);
+  border: 1px solid var(--color-lighter);
+}
+
+.fieldGroup {
+  @apply flex flex-col gap-2;
+}
+
+.label {
+  @apply text-sm font-medium;
+  color: var(--color-body);
+}
+
+.input {
+  @apply w-full px-3 py-2 rounded-md text-sm transition-colors;
+  background-color: var(--color-lighter);
+  color: var(--color-heading);
+  border: 1px solid var(--color-lighter);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.textarea {
+  @apply w-full px-3 py-2 rounded-md text-sm transition-colors resize-none;
+  background-color: var(--color-lighter);
+  color: var(--color-heading);
+  border: 1px solid var(--color-lighter);
+  min-height: 6rem;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.select {
+  @apply w-full px-3 py-2 rounded-md text-sm transition-colors;
+  background-color: var(--color-lighter);
+  color: var(--color-heading);
+  border: 1px solid var(--color-lighter);
+  cursor: pointer;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.select option {
+  background-color: var(--color-lighter);
+}
+
+.errorMsg {
+  @apply block text-sm;
+  color: var(--color-error);
+}
+
+.submitBtn {
+  @apply w-full px-4 py-2 rounded-md font-semibold text-sm transition-colors;
+  background-color: var(--color-primary);
+  color: var(--color-dark);
+}
+
+.submitBtn:hover:not(:disabled) {
+  background-color: var(--color-secondary);
+}
+
+.submitBtn:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
