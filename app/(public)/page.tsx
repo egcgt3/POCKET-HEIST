@@ -1,30 +1,43 @@
-"use client";
-
-// this page should be used only as a splash page to decide where a user should be navigated to
-// when logged in --> to /heists
-// when not logged in --> to /login
-
+import Link from "next/link";
 import { Clock8 } from "lucide-react";
-import { useUser } from "@/lib/AuthContext";
+import styles from "./splash.module.css";
 
 export default function Home() {
-  useUser(); // TODO: redirect to /heists (user) or /login (no user) once navigation is implemented
   return (
-    <div className="center-content">
-      <div className="page-content">
-        <h1>
-          P<Clock8 className="logo" strokeWidth={2.75} />
-          cket Heist
-        </h1>
-        <div>Mischief. Managed.</div>
-        <p className="mt-4 max-w-prose text-sm">
-          Welcome to Pocket Heist — the app that turns your office into a
-          playground. Challenge your colleagues to sneaky micro-missions, earn
-          bragging rights, and see who truly rules the break room. Sign up to
-          start plotting your first heist, or log in to check on the chaos
-          already unfolding.
-        </p>
+    <div className={styles.container}>
+      <div className={styles.wordmark}>
+        P
+        <Clock8
+          className={styles.wordmarkIcon}
+          strokeWidth={2.75}
+          aria-hidden
+        />
+        cket Heist
       </div>
+
+      <p className={styles.eyebrow}>◆ Mission Briefing</p>
+
+      <h1 className={styles.headline}>
+        Someone in this
+        <br />
+        office is already
+        <br />
+        planning your heist.
+      </h1>
+
+      <p className={styles.body}>
+        Pocket Heist turns your workplace into a playground for micro-missions
+        and petty corporate chaos. Accept assignments, pull off heists, and find
+        out who&apos;s really running things around here.
+      </p>
+
+      <Link href="/signup" className={styles.cta}>
+        Accept the mission
+      </Link>
+
+      <p className={styles.alt}>
+        Already have a codename? <Link href="/login">Log in</Link>
+      </p>
     </div>
   );
 }

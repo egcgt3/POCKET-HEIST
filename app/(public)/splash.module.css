@@ -1,0 +1,97 @@
+@reference "../../app/globals.css";
+
+.container {
+  @apply flex flex-col items-start justify-center min-h-lvh px-6;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.wordmark {
+  @apply font-bold text-lg flex items-center mb-14;
+  color: var(--color-heading);
+  animation: fadeUp 0.3s ease both;
+}
+
+.wordmarkIcon {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  vertical-align: -0.15em;
+  color: var(--color-primary);
+}
+
+.eyebrow {
+  @apply text-xs font-semibold uppercase mb-6;
+  letter-spacing: 0.22em;
+  color: var(--color-primary);
+  animation: fadeUp 0.4s 0.05s ease both;
+}
+
+.headline {
+  @apply font-black leading-none mb-6;
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  color: var(--color-heading);
+  padding-left: 1.25rem;
+  border-left: 3px solid var(--color-primary);
+  animation: fadeUp 0.5s 0.12s ease both;
+}
+
+.body {
+  @apply text-base leading-relaxed mb-8;
+  color: var(--color-body);
+  max-width: 48ch;
+  animation: fadeUp 0.5s 0.22s ease both;
+}
+
+.cta {
+  @apply font-semibold text-sm px-8 py-3 rounded-full inline-block mb-5 transition-transform;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+  color: var(--color-dark);
+  animation: fadeUp 0.5s 0.3s ease both;
+}
+
+.cta:hover {
+  transform: scale(1.03);
+}
+
+.alt {
+  @apply text-sm;
+  color: var(--color-body);
+  animation: fadeUp 0.5s 0.36s ease both;
+}
+
+.alt a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.alt a:hover {
+  color: var(--color-secondary);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmark,
+  .eyebrow,
+  .headline,
+  .body,
+  .cta,
+  .alt {
+    animation: none;
+  }
+}
