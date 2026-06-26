@@ -26,7 +26,8 @@
       "mcp__plugin_firebase_firebase__firebase_list_projects",
       "mcp__plugin_firebase_firebase__firebase_list_apps",
       "mcp__plugin_firebase_firebase__firebase_get_sdk_config",
-      "Bash(npm view *)"
+      "Bash(npm view *)",
+      "mcp__figma__get_screenshot"
     ]
   },
   "hooks": {
