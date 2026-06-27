@@ -1,0 +1,1 @@
+- [Project Conventions](project-conventions.md) — Established patterns: prop spread, loading composition, @reference paths, Firestore date handling, finalStatus type gap

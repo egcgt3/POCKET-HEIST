@@ -1,6 +1,7 @@
 // preview page for newly created UI components
-import Skeleton from "@/components/Skeleton"
-import Avatar from "@/components/Avatar"
+import Skeleton from "@/components/Skeleton";
+import Avatar from "@/components/Avatar";
+import Footer from "@/components/Footer";
 
 export default function PreviewPage() {
   return (
@@ -20,6 +21,11 @@ export default function PreviewPage() {
           <Avatar name="PocketHeist" />
         </div>
       </section>
+
+      <section>
+        <h3>Footer</h3>
+        <Footer />
+      </section>
     </div>
-  )
+  );
 }

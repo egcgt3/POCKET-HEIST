@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useUser } from "@/lib/AuthContext";
+import Footer from "@/components/Footer";
 
 export default function RootLayout({
   children,
@@ -25,5 +26,10 @@ export default function RootLayout({
     );
   }
 
-  return <main className="public">{children}</main>;
+  return (
+    <>
+      <main className="public">{children}</main>
+      <Footer />
+    </>
+  );
 }
