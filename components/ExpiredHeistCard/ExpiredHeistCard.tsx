@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Badge from "@/components/Badge";
 import styles from "./ExpiredHeistCard.module.css";
 
 interface ExpiredHeistCardProps {
@@ -28,9 +29,7 @@ export default function ExpiredHeistCard({
       >
         {title}
       </Link>
-      <span className={styles.badge} data-status={finalStatus}>
-        {finalStatus === "success" ? "Mission Complete" : "Mission Failed"}
-      </span>
+      <Badge variant={finalStatus} />
       <div className={styles.meta}>
         <span>
           Expired{" "}

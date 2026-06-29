@@ -20,21 +20,6 @@
   opacity: 1;
 }
 
-.badge {
-  @apply text-xs font-semibold rounded-full self-start;
-  padding: 0.125rem 0.5rem;
-}
-
-.badge[data-status="success"] {
-  color: var(--color-success);
-  background-color: rgba(5, 223, 114, 0.1);
-}
-
-.badge[data-status="failure"] {
-  color: var(--color-error);
-  background-color: rgba(255, 100, 103, 0.1);
-}
-
 .meta {
   @apply flex flex-col gap-1 text-sm;
   color: var(--color-body);
