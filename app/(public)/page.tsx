@@ -25,6 +25,8 @@ export default function Home() {
         planning your heist.
       </h1>
 
+      <p className={styles.subtitle}>Big Plans, Tiny Crimes.</p>
+
       <p className={styles.body}>
         Pocket Heist turns your workplace into a playground for micro-missions
         and petty corporate chaos. Accept assignments, pull off heists, and find

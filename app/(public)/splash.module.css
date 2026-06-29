@@ -36,6 +36,12 @@
   animation: fadeUp 0.5s 0.12s ease both;
 }
 
+.subtitle {
+  @apply text-sm font-semibold italic mb-6;
+  color: var(--color-muted);
+  animation: fadeUp 0.5s 0.18s ease both;
+}
+
 .body {
   @apply text-base leading-relaxed mb-8;
   color: var(--color-body);
