@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Badge from "@/components/Badge";
 import styles from "./HeistCard.module.css";
 
 interface HeistCardProps {
@@ -21,9 +22,7 @@ export default function HeistCard({
       <Link href={`/heists/${id}`} className={styles.title}>
         {title}
       </Link>
-      <span className={styles.badge} data-mode={mode}>
-        {mode === "active" ? "Active" : "Assigned"}
-      </span>
+      <Badge variant={mode} />
       <div className={styles.meta}>
         <span>Due {deadline.toLocaleDateString()}</span>
         <span className={styles.crew}>
