@@ -1,0 +1,99 @@
+@reference "../../globals.css";
+
+.container {
+  @apply max-w-2xl mx-auto flex flex-col gap-8;
+}
+
+.back {
+  @apply text-sm text-[var(--color-muted)] hover:text-[var(--color-foreground)] transition-colors;
+}
+
+.header {
+  @apply flex flex-col gap-2;
+}
+
+.title {
+  @apply text-3xl font-bold;
+}
+
+.countdown {
+  @apply text-sm font-mono px-3 py-1 rounded-full w-fit;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+}
+
+.countdownUrgent {
+  color: var(--color-danger, #ef4444);
+  border-color: var(--color-danger, #ef4444);
+}
+
+.section {
+  @apply flex flex-col gap-4;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.sectionTitle {
+  @apply text-xs uppercase tracking-widest font-semibold;
+  color: var(--color-muted);
+}
+
+.description {
+  @apply text-sm leading-relaxed;
+  color: var(--color-foreground);
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.metaItem {
+  @apply flex flex-col gap-1;
+}
+
+.metaLabel {
+  @apply text-xs uppercase tracking-widest font-semibold;
+  color: var(--color-muted);
+}
+
+.metaValue {
+  @apply text-sm font-medium;
+  color: var(--color-foreground);
+}
+
+.skeleton {
+  @apply animate-pulse rounded;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+}
+
+.skeletonTitle {
+  height: 2.5rem;
+  width: 60%;
+  border-radius: var(--radius);
+  background: var(--color-border);
+}
+
+.skeletonBadge {
+  height: 1.5rem;
+  width: 8rem;
+  border-radius: 9999px;
+  background: var(--color-border);
+}
+
+.skeletonSection {
+  height: 8rem;
+  border-radius: var(--radius);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+}
+
+.notFound {
+  @apply text-center flex flex-col gap-2;
+  color: var(--color-muted);
+}
