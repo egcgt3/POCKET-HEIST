@@ -16,21 +16,6 @@
   color: var(--color-primary);
 }
 
-.badge {
-  @apply text-xs font-semibold rounded-full self-start;
-  padding: 0.125rem 0.5rem;
-}
-
-.badge[data-mode="active"] {
-  color: var(--color-success);
-  background-color: rgba(5, 223, 114, 0.1);
-}
-
-.badge[data-mode="assigned"] {
-  color: var(--color-primary);
-  background-color: rgba(194, 122, 255, 0.1);
-}
-
 .meta {
   @apply flex flex-col gap-1 text-sm;
   color: var(--color-body);

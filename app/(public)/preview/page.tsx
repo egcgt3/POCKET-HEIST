@@ -2,6 +2,7 @@
 import Skeleton from "@/components/Skeleton";
 import Avatar from "@/components/Avatar";
 import Footer from "@/components/Footer";
+import Badge from "@/components/Badge";
 
 export default function PreviewPage() {
   return (
@@ -19,6 +20,16 @@ export default function PreviewPage() {
           <Avatar name="Alice" />
           <Avatar name="JohnDoe" />
           <Avatar name="PocketHeist" />
+        </div>
+      </section>
+
+      <section>
+        <h3>Badge</h3>
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          <Badge variant="active" />
+          <Badge variant="assigned" />
+          <Badge variant="success" />
+          <Badge variant="failure" />
         </div>
       </section>
 
